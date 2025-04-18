@@ -1,0 +1,32 @@
+{
+  "name": "x-kit-mcp",
+  "module": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "bun run mcp-server.ts",
+    "build": "tsup"
+  },
+  "bin":{
+    "x-kit-mcp": "dist/index.cjs"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/lodash": "^4.17.16",
+    "tsup": "^8.4.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
+    "fs-extra": "^11.2.0",
+    "lodash": "^4.17.21",
+    "twitter-api-v2": "^1.18.2",
+    "twitter-openapi-typescript": "^0.0.45",
+    "twitter-openapi-typescript-generated": "^0.0.37",
+    "zod": "^3.24.2"
+  }
+}
