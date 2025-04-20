@@ -1,8 +1,12 @@
 import { XAuthClient } from "./utils";
 import { get } from "lodash";
 import dayjs from "dayjs";
+import isBetween from 'dayjs/plugin/isBetween';
 import fs from "fs-extra";
 import type { TweetApiUtilsData } from "twitter-openapi-typescript";
+
+// 启用 dayjs 插件
+dayjs.extend(isBetween);
 
 export const fetchTweets = async () => {
 	const client = await XAuthClient();
@@ -28,8 +32,11 @@ export const fetchTweets = async () => {
 			return;
 		}
 		const createdAt = get(tweet, "raw.result.legacy.createdAt");
-		// return if more than 1 days
-		if (dayjs().diff(dayjs(createdAt), "day") > 1) {
+		// 只获取24小时以内的推文
+		const tweetDate = dayjs(createdAt);
+		const now = dayjs();
+		const twentyFourHoursAgo = now.subtract(24, 'hour');
+		if (!tweetDate.isBetween(twentyFourHoursAgo, now)) {
 			return;
 		}
 		const screenName = get(tweet, "user.legacy.screenName");
@@ -114,7 +121,16 @@ export const fetchTweets = async () => {
 
 	console.log(sortedRows);
 
-  return sortedRows;
+	return sortedRows;
 };
 
-fetchTweets();
+// 检查是否在 Node.js 环境中运行
+if (typeof process !== 'undefined' && process.versions && process.versions.node) {
+	// 在 Node.js 环境中运行
+	if (require.main === module) {
+		fetchTweets().catch(console.error);
+	}
+} else {
+	// 在其他环境中运行
+	fetchTweets().catch(console.error);
+}

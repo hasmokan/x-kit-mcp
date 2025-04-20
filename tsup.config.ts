@@ -13,6 +13,6 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   shims: true,
-  // noExternal: [/.*/],
-  // bundle: true,
+  noExternal: [/.*/],
+  bundle: true,
 }) 

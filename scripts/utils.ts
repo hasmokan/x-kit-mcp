@@ -2,10 +2,14 @@ import { TwitterOpenApi } from "twitter-openapi-typescript";
 import axios from "axios";
 import { TwitterApi } from 'twitter-api-v2';
 import fs from 'fs';
-import config from '../config.json';
+import { config } from "dotenv";
+import path from "path";
+
+// 加载 .env 文件
+config({ path: path.resolve(process.cwd(), '.env') });
 
 // 代理服务器URL
-const PROXY_URL = config.PROXY_URL;
+const PROXY_URL = process.env.PROXY_URL || '';
 
 // 构建代理URL的辅助函数
 const getProxiedUrl = (url: string) => {
@@ -70,8 +74,8 @@ export const _xClient = async (TOKEN: string) => {
   }
 };
 
-export const xGuestClient = () => _xClient(config.GET_ID_X_TOKEN);
-export const XAuthClient = () => _xClient(config.AUTH_TOKEN);
+export const xGuestClient = () => _xClient(process.env.GET_ID_X_TOKEN || '');
+export const XAuthClient = () => _xClient(process.env.AUTH_TOKEN || '');
 
 export const login = async (AUTH_TOKEN: string) => {
   try {
